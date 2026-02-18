@@ -141,9 +141,8 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-// -------------------------
+
 // ViewModel Factories
-// -------------------------
 
 class AddExpenseViewModelFactory(private val dao: ExpenseDao) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
@@ -199,9 +198,9 @@ class ExpenseListViewModelFactory(private val dao: ExpenseDao) : ViewModelProvid
     }
 }
 
-// -------------------------
+
 // UserPreferences helper
-// -------------------------
+
 
 object UserPreferences {
     private const val PREFS_NAME = "expense_prefs"
