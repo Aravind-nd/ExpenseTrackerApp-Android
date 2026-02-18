@@ -513,29 +513,7 @@ Update: Analytics chart color scheme
 
 
 
-##  Acknowledgments
 
-
-- [MPAndroidChart](https://github.com/PhilJay/MPAndroidChart) - Beautiful chart library
--  [Jetpack Compose](https://developer.android.com/jetpack/compose) - Modern Android UI toolkit
--  [Room Database](https://developer.android.com/training/data-storage/room) - SQLite abstraction layer
--  [Material Design 3](https://m3.material.io/) - Design system and components
--  [Android Developers](https://developer.android.com/) - Documentation and resources
-
----
-
-##  Support
-
-### Getting Help
-
--  Check the [Documentation](https://github.com/yourusername/ExpenseTrackerApp/wiki)
--  Report bugs via [Issues](https://github.com/yourusername/ExpenseTrackerApp/issues)
--  Join discussions in [Discussions](https://github.com/yourusername/ExpenseTrackerApp/discussions)
--  Star this repository if you find it helpful!
-
-
-
----
 
 
 
