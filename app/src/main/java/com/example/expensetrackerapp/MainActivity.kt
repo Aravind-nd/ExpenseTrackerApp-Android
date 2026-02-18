@@ -43,7 +43,6 @@ class MainActivity : ComponentActivity() {
     @Composable
     fun AppNavigation(dao: ExpenseDao) {
         val navController = rememberNavController()
-        val scope = rememberCoroutineScope()
 
         // Check if onboarding has been seen
         var hasSeenOnboarding by remember { mutableStateOf(false) }
@@ -72,23 +71,11 @@ class MainActivity : ComponentActivity() {
 
             // Dashboard
             composable("dashboard") {
-                val currentDate = System.currentTimeMillis()
-                val calendar = java.util.Calendar.getInstance()
-                calendar.timeInMillis = currentDate
-                val currentMonth = (calendar.get(java.util.Calendar.MONTH) + 1).toString().padStart(2, '0')
-                val currentYear = calendar.get(java.util.Calendar.YEAR).toString()
-
-                val dailyTotals by dao.getDailyTotals(currentMonth, currentYear).collectAsState(initial = emptyList())
-                val allExpenses by dao.getAllExpenses().collectAsState(initial = emptyList())
-
-                val todayTotal = dailyTotals.lastOrNull()?.total ?: 0.0
-                val monthTotal = dailyTotals.sumOf { it.total }
-                val recentExpenses = allExpenses.take(5)
-
+                val dashboardViewModel: com.example.expensetrackerapp.uiscreens.addexpense.dashboard.DashboardViewModel = viewModel(
+                    factory = DashboardViewModelFactory(dao)
+                )
                 DashboardScreen(
-                    todayTotal = todayTotal,
-                    monthTotal = monthTotal,
-                    recentExpenses = recentExpenses,
+                    viewModel = dashboardViewModel,
                     onAddExpenseClick = { navController.navigate("add_expense") },
                     onExpenseListClick = { navController.navigate("expense_list") },
                     onAnalyticsClick = { navController.navigate("analytics") },
@@ -120,19 +107,21 @@ class MainActivity : ComponentActivity() {
 
             // Analytics
             composable("analytics") {
-                AnalyticsScreen(dao)
+                val analyticsViewModel: com.example.expensetrackerapp.uiscreens.addexpense.analytics.AnalyticsViewModel = viewModel(
+                    factory = AnalyticsViewModelFactory(dao)
+                )
+                AnalyticsScreen(analyticsViewModel)
             }
 
             // Expense List
             composable("expense_list") {
-                val expenses by dao.getAllExpenses().collectAsState(initial = emptyList())
+                val expenseListViewModel: com.example.expensetrackerapp.uiscreens.addexpense.expenselists.ExpenseListViewModel = viewModel(
+                    factory = ExpenseListViewModelFactory(dao)
+                )
                 ExpenseListScreen(
-                    expenses = expenses,
+                    viewModel = expenseListViewModel,
                     onEdit = { expense ->
                         navController.navigate("edit_expense/${expense.id}")
-                    },
-                    onDelete = { expense ->
-                        scope.launch { dao.deleteExpense(expense) }
                     },
                     onClickItem = { expense ->
                         navController.navigate("expense_detail/${expense.id}")
@@ -175,6 +164,36 @@ class EditExpenseViewModelFactory(
         if (modelClass.isAssignableFrom(EditExpenseViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
             return EditExpenseViewModel(dao, savedStateHandle) as T
+        }
+        throw IllegalArgumentException("Unknown ViewModel class")
+    }
+}
+
+class DashboardViewModelFactory(private val dao: ExpenseDao) : ViewModelProvider.Factory {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(com.example.expensetrackerapp.uiscreens.addexpense.dashboard.DashboardViewModel::class.java)) {
+            @Suppress("UNCHECKED_CAST")
+            return com.example.expensetrackerapp.uiscreens.addexpense.dashboard.DashboardViewModel(dao) as T
+        }
+        throw IllegalArgumentException("Unknown ViewModel class")
+    }
+}
+
+class AnalyticsViewModelFactory(private val dao: ExpenseDao) : ViewModelProvider.Factory {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(com.example.expensetrackerapp.uiscreens.addexpense.analytics.AnalyticsViewModel::class.java)) {
+            @Suppress("UNCHECKED_CAST")
+            return com.example.expensetrackerapp.uiscreens.addexpense.analytics.AnalyticsViewModel(dao) as T
+        }
+        throw IllegalArgumentException("Unknown ViewModel class")
+    }
+}
+
+class ExpenseListViewModelFactory(private val dao: ExpenseDao) : ViewModelProvider.Factory {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(com.example.expensetrackerapp.uiscreens.addexpense.expenselists.ExpenseListViewModel::class.java)) {
+            @Suppress("UNCHECKED_CAST")
+            return com.example.expensetrackerapp.uiscreens.addexpense.expenselists.ExpenseListViewModel(dao) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

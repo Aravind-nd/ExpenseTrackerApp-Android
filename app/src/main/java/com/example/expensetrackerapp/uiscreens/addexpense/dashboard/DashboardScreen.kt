@@ -269,6 +269,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
@@ -282,14 +284,16 @@ import com.example.expensetrackerapp.Expense
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DashboardScreen(
-    todayTotal: Double,
-    monthTotal: Double,
-    recentExpenses: List<Expense>,
+    viewModel: DashboardViewModel,
     onAddExpenseClick: () -> Unit,
     onExpenseListClick: () -> Unit,
     onAnalyticsClick: () -> Unit,
     onEditExpenseClick: (Expense) -> Unit
 ) {
+    val uiState by viewModel.uiState.collectAsState()
+    val todayTotal = uiState.todayTotal
+    val monthTotal = uiState.monthTotal
+    val recentExpenses = uiState.recentExpenses
     Column(
         modifier = Modifier
             .fillMaxSize()

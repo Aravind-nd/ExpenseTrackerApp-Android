@@ -28,33 +28,21 @@ import com.github.mikephil.charting.data.*
 import com.github.mikephil.charting.formatter.ValueFormatter
 import com.example.expensetrackerapp.CategoryTotal
 import com.example.expensetrackerapp.WeeklyTotal
-import com.example.expensetrackerapp.ExpenseDao
+import java.util.Calendar
 import kotlin.math.roundToInt
-import java.util.*
 
 @Composable
-fun AnalyticsScreen(expenseDao: ExpenseDao) {
-
-    val calendar = remember { Calendar.getInstance() }
-    var selectedMonth by remember { mutableStateOf(calendar.get(Calendar.MONTH)) }
-    var selectedYear by remember { mutableStateOf(calendar.get(Calendar.YEAR)) }
-
-    val monthStr = String.format("%02d", selectedMonth + 1)
-    val yearStr = selectedYear.toString()
-
-    val categoryTotals by expenseDao
-        .getCategoryTotals(monthStr, yearStr)
-        .collectAsState(initial = emptyList<CategoryTotal>())
-
-    val weeklyTotals by expenseDao
-        .getWeeklyTotals(monthStr, yearStr)
-        .collectAsState(initial = emptyList<WeeklyTotal>())
-
-    val totalSpending = weeklyTotals.sumOf { it.total }
-    val avgSpending =
-        if (weeklyTotals.isEmpty()) 0.0 else totalSpending / weeklyTotals.size
-
-    val topCategory = categoryTotals.maxByOrNull { it.total }
+fun AnalyticsScreen(viewModel: AnalyticsViewModel) {
+    
+    val uiState by viewModel.uiState.collectAsState()
+    val selectedMonth = viewModel.selectedMonth
+    val selectedYear = viewModel.selectedYear
+    
+    val categoryTotals = uiState.categoryTotals
+    val weeklyTotals = uiState.weeklyTotals
+    val totalSpending = uiState.totalSpending
+    val avgSpending = uiState.avgSpending
+    val topCategory = uiState.topCategory
 
     Column(
         modifier = Modifier
@@ -72,8 +60,8 @@ fun AnalyticsScreen(expenseDao: ExpenseDao) {
             MonthYearPicker(
                 selectedMonth,
                 selectedYear,
-                { selectedMonth = it },
-                { selectedYear = it }
+                { viewModel.updateMonth(it) },
+                { viewModel.updateYear(it) }
             )
         }
 
@@ -103,7 +91,7 @@ fun AnalyticsScreen(expenseDao: ExpenseDao) {
             SpendingSummary(
                 totalSpending,
                 avgSpending,
-                topCategory?.category ?: "-"
+                topCategory
             )
         }
 

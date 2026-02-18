@@ -25,11 +25,12 @@ import kotlin.math.roundToInt
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ExpenseListScreen(
-    expenses: List<Expense>,
-    onDelete: (Expense) -> Unit,
+    viewModel: ExpenseListViewModel,
     onEdit: (Expense) -> Unit,
     onClickItem: (Expense) -> Unit
 ) {
+    val uiState by viewModel.uiState.collectAsState()
+    val expenses = uiState.expenses
 
     val categories = listOf(
         "All", "Food", "Transport",
@@ -173,7 +174,7 @@ fun ExpenseListScreen(
                     val dismissState = rememberSwipeToDismissBoxState()
 
                     if (dismissState.currentValue == EndToStart) {
-                        onDelete(expense)
+                        viewModel.deleteExpense(expense)
                     }
 
                     SwipeToDismissBox(
