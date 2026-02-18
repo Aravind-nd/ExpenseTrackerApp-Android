@@ -366,7 +366,7 @@ fun AddExpenseScreen(viewModel: AddExpenseViewModel) {
 
                 Spacer(modifier = Modifier.weight(1f))
 
-                // Animated Save Button
+                
                 Button(
                     onClick = {
                         viewModel.addExpense()
@@ -415,7 +415,7 @@ fun AddExpenseScreen(viewModel: AddExpenseViewModel) {
 @Preview(showBackground = true)
 @Composable
 fun AddExpenseScreenPreview() {
-    // Create a mock DAO for preview
+    // Sample Dao (used only for preview)
     val mockDao = object : ExpenseDao {
         override suspend fun insertExpense(expense: Expense) {}
         override fun getAllExpenses(): Flow<List<Expense>> = flowOf(emptyList())
