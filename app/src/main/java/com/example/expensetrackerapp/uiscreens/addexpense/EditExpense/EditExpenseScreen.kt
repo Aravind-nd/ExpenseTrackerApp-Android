@@ -23,7 +23,7 @@ fun EditExpenseScreen(
 ) {
     val context = LocalContext.current
 
-    // ✅ Navigate after update/delete success
+    //  Navigate after update/delete success
     LaunchedEffect(viewModel.showSuccess) {
         if (viewModel.showSuccess) {
 
@@ -35,7 +35,7 @@ fun EditExpenseScreen(
 
             viewModel.showSuccess = false
 
-            // 🔥 Navigate to Dashboard and clear back stack
+            //  Navigate to Dashboard and clear back stack
             navController.navigate("dashboard") {
                 popUpTo("dashboard") { inclusive = true }
             }
