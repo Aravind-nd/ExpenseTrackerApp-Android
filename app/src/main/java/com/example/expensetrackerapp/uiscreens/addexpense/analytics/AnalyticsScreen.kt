@@ -99,9 +99,9 @@ fun AnalyticsScreen(viewModel: AnalyticsViewModel) {
     }
 }
 
-////////////////////////////////////////////////////////////
+
 // Month + Year Picker
-////////////////////////////////////////////////////////////
+
 
 @Composable
 fun MonthYearPicker(
@@ -178,9 +178,9 @@ fun MonthYearPicker(
     }
 }
 
-////////////////////////////////////////////////////////////
+
 // Analytics Card
-////////////////////////////////////////////////////////////
+
 
 @Composable
 fun AnalyticsCard(
@@ -202,107 +202,7 @@ fun AnalyticsCard(
     }
 }
 
-////////////////////////////////////////////////////////////
-// Clean Donut Pie Chart + Legend
-////////////////////////////////////////////////////////////
 
-//@Composable
-//fun CategoryPieChart(data: List<CategoryTotal>) {
-//
-//    val colors = listOf(
-//        Color(0xFF4CAF50),
-//        Color(0xFF2196F3),
-//        Color(0xFFFF9800),
-//        Color(0xFFE91E63),
-//        Color(0xFF9C27B0),
-//        Color(0xFF009688),
-//        Color(0xFF795548),
-//        Color(0xFF607D8B)
-//    )
-//
-//    val total = data.sumOf { it.total }.takeIf { it > 0 } ?: 1.0
-//
-//    val colorMap = data.mapIndexed { index, item ->
-//        item.category to colors[index % colors.size]
-//    }.toMap()
-//
-//    Row(
-//        modifier = Modifier
-//            .fillMaxWidth()
-//            .height(280.dp)
-//            .padding(vertical = 8.dp),
-//        verticalAlignment = Alignment.CenterVertically
-//    ) {
-//
-//        AndroidView(
-//            modifier = Modifier.weight(1.6f),
-//            factory = { context ->
-//
-//                PieChart(context).apply {
-//
-//                    val entries = data.map {
-//                        PieEntry(it.total.toFloat())
-//                    }
-//
-//                    val dataSet = PieDataSet(entries, "").apply {
-//                        this.colors = data.map {
-//                            colorMap[it.category]?.toArgb() ?: AndroidColor.GRAY
-//                        }
-//                        sliceSpace = 0f
-//                        setDrawValues(false)
-//                    }
-//
-//                    this.data = PieData(dataSet)
-//
-//                    setDrawEntryLabels(false)
-//                    setDrawHoleEnabled(true)
-//
-//                    holeRadius = 65f
-//                    transparentCircleRadius = 70f
-//
-//                    description.isEnabled = false
-//                    legend.isEnabled = false
-//
-//                    animateY(900)
-//                    invalidate()
-//                }
-//            }
-//        )
-//
-//        Spacer(modifier = Modifier.width(16.dp))
-//
-//        LazyColumn(
-//            modifier = Modifier.weight(1.4f),
-//            verticalArrangement = Arrangement.spacedBy(10.dp)
-//        ) {
-//            items(data) { item ->
-//
-//                val percent = ((item.total / total) * 100).roundToInt()
-//
-//                Row(verticalAlignment = Alignment.CenterVertically) {
-//
-//                    Box(
-//                        modifier = Modifier
-//                            .size(14.dp)
-//                            .background(
-//                                colorMap[item.category] ?: Color.Gray,
-//                                RoundedCornerShape(4.dp)
-//                            )
-//                    )
-//
-//                    Spacer(modifier = Modifier.width(8.dp))
-//
-//                    Text(
-//                        text = item.category,
-//                        modifier = Modifier.weight(1f)
-//                    )
-//
-//                    Text("$percent%")
-//                }
-//            }
-//        }
-//    }
-//}
 
 @Composable
 fun CategoryPieChart(data: List<CategoryTotal>) {
@@ -327,18 +227,18 @@ fun CategoryPieChart(data: List<CategoryTotal>) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .height(320.dp) // 👈 Bigger height
+            .height(320.dp)
             .padding(vertical = 12.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
 
-        ////////////////////////////////
-        // BIG DONUT CHART
-        ////////////////////////////////
+       
+        //  DONUT CHART
+       
 
         AndroidView(
             modifier = Modifier
-                .weight(2.2f) // 👈 More space for chart
+                .weight(2.2f) 
                 .fillMaxHeight(),
             factory = { context ->
 
@@ -353,7 +253,7 @@ fun CategoryPieChart(data: List<CategoryTotal>) {
                             colorMap[it.category]?.toArgb() ?: AndroidColor.GRAY
                         }
 
-                        sliceSpace = 0f // 👈 NO GAPS
+                        sliceSpace = 0f 
                         setDrawValues(false)
                     }
 
@@ -364,7 +264,7 @@ fun CategoryPieChart(data: List<CategoryTotal>) {
 
                     setDrawHoleEnabled(true)
 
-                    holeRadius = 68f // 👈 slightly larger inner hole
+                    holeRadius = 68f 
                     transparentCircleRadius = 72f
 
                     description.isEnabled = false
@@ -380,9 +280,9 @@ fun CategoryPieChart(data: List<CategoryTotal>) {
 
         Spacer(modifier = Modifier.width(20.dp))
 
-        ////////////////////////////////
+      
         // LEGEND
-        ////////////////////////////////
+
 
         LazyColumn(
             modifier = Modifier
@@ -427,9 +327,8 @@ fun CategoryPieChart(data: List<CategoryTotal>) {
     }
 }
 
-////////////////////////////////////////////////////////////
+
 // Weekly Line Chart
-////////////////////////////////////////////////////////////
 
 @Composable
 fun WeeklyLineChart(data: List<WeeklyTotal>) {
@@ -478,9 +377,9 @@ fun WeeklyLineChart(data: List<WeeklyTotal>) {
     )
 }
 
-////////////////////////////////////////////////////////////
+
 // Summary
-////////////////////////////////////////////////////////////
+
 
 @Composable
 fun SpendingSummary(
